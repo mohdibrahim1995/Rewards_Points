@@ -1,9 +1,7 @@
-// CustomerList.test.js
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import CustomerList from './CustomerList';
 import { fetchTransactionData } from '../components/api/transactionData';
-import { calculateRewardPoints } from '../utils/calculateRewardPoints';
 
 // Mock the fetchTransactionData function
 jest.mock('../components/api/transactionData');
@@ -56,6 +54,22 @@ describe('CustomerList', () => {
         // Assert: Check if error message is displayed
         await waitFor(() => {
             expect(screen.getByText(/invalid date/i)).toBeInTheDocument();
+        });
+    });
+
+    it('displays loading screen while fetching data', async () => {
+        // Arrange: Mock fetchTransactionData to delay the response
+        fetchTransactionData.mockImplementation(() => new Promise((resolve) => setTimeout(() => resolve([]), 1000)));
+
+        // Act: Render the component
+        render(<CustomerList />);
+
+        // Assert: Check if the loading message is displayed
+        expect(screen.getByText(/loading.../i)).toBeInTheDocument();
+
+        // Wait for the data to load (after the mock delay)
+        await waitFor(() => {
+            expect(screen.queryByText(/loading.../i)).not.toBeInTheDocument(); // Ensure loading message is gone
         });
     });
 });
