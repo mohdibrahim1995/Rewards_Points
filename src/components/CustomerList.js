@@ -8,15 +8,12 @@ import { fetchTransactionData } from '../components/api/transactionData';
 
 // Utility function to format dates as dd/mm/yyyy
 const formatDate = (dateString) => {
-   
     const date = new Date(dateString);
-
     // Check if the date is valid
     if (isNaN(date)) {
         console.error(`Invalid date: ${dateString}`);
         return 'Invalid Date';
     }
-
     const day = String(date.getDate()).padStart(2, '0'); // Ensure two digits
     const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
     const year = date.getFullYear();
@@ -25,6 +22,7 @@ const formatDate = (dateString) => {
 
 const CustomerList = () => {
     const [transactions, setTransactions] = useState([]);
+    const [loading, setLoading] = useState(true); // Loading state
     const [error, setError] = useState(null); // State for error handling
 
     useEffect(() => {
@@ -39,12 +37,19 @@ const CustomerList = () => {
                 setTransactions(enrichedData);
             } catch (err) {
                 setError('Failed to load transactions'); // Set error message
+            } finally {
+                setLoading(false); // Set loading to false once fetching is done
             }
         };
         loadTransactions();
     }, []);
 
-    // Handling the error state
+    // Handle loading state
+    if (loading) {
+        return <div className="loading-message">Loading...</div>; // Display loading message
+    }
+
+    // Handle error state
     if (error) {
         return <div className="error-message">{error}</div>;
     }
@@ -77,4 +82,3 @@ const CustomerList = () => {
 };
 
 export default CustomerList;
-
