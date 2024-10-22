@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import TransactionsTable from './TransactionsTable,js';
+import TransactionsTable from '../TransactionsTable.js';
 
 // Mock transaction data
 const mockTransactions = [
