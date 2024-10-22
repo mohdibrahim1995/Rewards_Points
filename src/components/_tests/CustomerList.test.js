@@ -1,10 +1,10 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import CustomerList from './CustomerList';
-import { fetchTransactionData } from '../components/api/transactionData';
+import { fetchTransactionData } from 'src/components/api/transactionData';
 
 // Mock the fetchTransactionData function
-jest.mock('../components/api/transactionData');
+jest.mock('src/components/api/transactionData');
 
 describe('CustomerList', () => {
     beforeEach(() => {
