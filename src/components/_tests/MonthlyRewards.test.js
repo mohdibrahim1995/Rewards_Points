@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import MonthlyRewards from './MonthlyRewards.js';
+import MonthlyRewards from 'src/components/MonthlyRewards';
 
 describe('MonthlyRewards Component', () => {
     const mockData = [
