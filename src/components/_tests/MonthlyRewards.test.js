@@ -1,105 +1,67 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
-import MonthlyRewards from 'src/components/MonthlyRewards';
+import { render, screen, waitFor } from '@testing-library/react';
+import CustomerList from './CustomerList'; // Assuming CustomerList is the component you want to test
+import { fetchTransactionData } from '../api/transactionData'; 
 
-describe('MonthlyRewards Component', () => {
-    const mockData = [
-        {
-            monthYear: 'July 2024',
-            transactions: [
-                {
-                    id: '1',
-                    customerId: 'C001',
-                    customerName: 'John Doe',
-                    amount: 120.00,
-                    formattedDate: '2024-07-05',
-                    year: '2024',
-                    points: 90,
-                },
-                {
-                    id: '2',
-                    customerId: 'C002',
-                    customerName: 'Jane Smith',
-                    amount: 95,
-                    formattedDate: '2024-07-14',
-                    year: '2024',
-                    points: 45,
-                },
-            ],
-        },
-        {
-            monthYear: 'August  2024',
-            transactions: [
-                {
-                    id: '3',
-                    customerId: 'C003',
-                    customerName: 'Jane Smith',
-                    amount: 75.00,
-                    formattedDate: '2024-08-22',
-                    year: '2024',
-                    points: 25,
-                },
-                {
-                    id: '4',
-                    customerId: 'C003',
-                    customerName: 'Sean Smith',
-                    amount: 175.00,
-                    formattedDate: '2024-08-01',
-                    year: '2024',
-                    points: 200,
-                },
-            ],
-        },
-        {
-            monthYear: 'September  2024',
-            transactions: [
-                {
-                    id: '5',
-                    customerId: 'C001',
-                    customerName: 'John Doe',
-                    amount: 95.00,
-                    formattedDate: '2024-09-20',
-                    year: '2024',
-                    points: 45,
-                },
-            ],
-        },
-    ];
+// Mock the fetchTransactionData function
+jest.mock('../api/transactionData', () => ({
+    fetchTransactionData: jest.fn(  
+        () => Promise.resolve(mockTransactionData)
+        ),
+   
+}))
 
-    test('renders User Monthly Rewards heading', () => {
-        render(<MonthlyRewards monthlyData={[]} />);
-        const headingElement = screen.getByText(/User Monthly Rewards/i);
-        expect(headingElement).toBeInTheDocument();
-    });
+const mockTransactionData = [
+    { id: 1, customerId: 'C001', customerName: 'John Doe', date: '7/5/2024', amount: 120.00, year: 2024 },
+    { id: 2, customerId: 'C002', customerName: 'Jane Smith', date: '8/22/2024', amount: 75.00, year: 2024 },
+    { id: 3, customerId: 'C003', customerName: 'Sean Smith', date: '8/1/2024', amount: 175.00, year: 2024 },
+    { id: 4, customerId: 'C002', customerName: 'Jane Smith', date: '7/14/2024', amount: 95.00, year: 2024 },
+    { id: 5, customerId: 'C001', customerName: 'John Doe', date: '9/20/2024', amount: 95.00, year: 2024 },
+];
 
-    test('renders correct monthly data', () => {
-        render(<MonthlyRewards monthlyData={mockData} />);
+test('renders user monthly rewards table grouped by month', async () => {
+    // Mock the API response
+    fetchTransactionData.mockResolvedValueOnce(mockTransactionData);
 
-        // Check for month headers
-        expect(screen.getByText(/July  2024/i)).toBeInTheDocument();
-        expect(screen.getByText(/August  2024/i)).toBeInTheDocument();
-        expect(screen.getByText(/September  2024/i)).toBeInTheDocument();
+    // Render the CustomerList component
+    render(<CustomerList />);
 
-        // Check for transactions in July
-        expect(screen.getByText(/John Doe/i)).toBeInTheDocument();
-        expect(screen.getByText(/\$120.00/i)).toBeInTheDocument();
-        expect(screen.getByText(/Jane Smith/i)).toBeInTheDocument();
-        expect(screen.getByText(/\$95.50/i)).toBeInTheDocument();
+    // Wait for the loading message to disappear
+    await waitFor(() => expect(screen.queryByText('Loading...')).not.toBeInTheDocument());
 
-        // Check for transactions in August
-        expect(screen.getByText(/Jane Smith/i)).toBeInTheDocument();
-        expect(screen.getByText(/\$75.00/i)).toBeInTheDocument();
-        expect(screen.getByText(/Sean Smith/i)).toBeInTheDocument();
-        expect(screen.getByText(/\$175.00/i)).toBeInTheDocument();
+    // Check for the presence of the monthly groups (July, August, September)
+    expect(screen.getByText('July 2024')).toBeInTheDocument();
+    expect(screen.getByText('August 2024')).toBeInTheDocument();
+    expect(screen.getByText('September 2024')).toBeInTheDocument();
 
-        // Check for transactions in September 
-        expect(screen.getByText(/John Doe/i)).toBeInTheDocument();
-        expect(screen.getByText(/\$95.00/i)).toBeInTheDocument();
-    });
+    // Check the rows for each transaction in July
+    expect(screen.getByText('C001')).toBeInTheDocument(); // Customer ID for John Doe
+    expect(screen.getByText('John Doe')).toBeInTheDocument();
+    expect(screen.getByText('120.00')).toBeInTheDocument();
+    expect(screen.getByText('05/07/2024')).toBeInTheDocument(); // Formatted date
+    expect(screen.getByText('90')).toBeInTheDocument(); // Points for $120.00 spent
 
-    test('renders empty state when no monthly data is provided', () => {
-        render(<MonthlyRewards monthlyData={[]} />);
-        const monthHeaders = screen.queryAllByRole('heading', { level: 3 });
-        expect(monthHeaders.length).toBe(0); // No month headers should be present
-    });
+    expect(screen.getByText('C002')).toBeInTheDocument(); // Customer ID for Jane Smith
+    expect(screen.getByText('Jane Smith')).toBeInTheDocument();
+    expect(screen.getByText('95.00')).toBeInTheDocument();
+    expect(screen.getByText('14/07/2024')).toBeInTheDocument();
+    expect(screen.getByText('45')).toBeInTheDocument(); // Points for $95.00 spent
+
+    // Check the rows for each transaction in August
+    expect(screen.getByText('C002')).toBeInTheDocument();
+    expect(screen.getByText('75.00')).toBeInTheDocument();
+    expect(screen.getByText('22/08/2024')).toBeInTheDocument();
+    expect(screen.getByText('25')).toBeInTheDocument(); // Points for $75.00 spent
+
+    expect(screen.getByText('C003')).toBeInTheDocument();
+    expect(screen.getByText('Sean Smith')).toBeInTheDocument();
+    expect(screen.getByText('175.00')).toBeInTheDocument();
+    expect(screen.getByText('01/08/2024')).toBeInTheDocument();
+    expect(screen.getByText('200')).toBeInTheDocument(); // Points for $175.00 spent
+
+    // Check the rows for each transaction in September
+    expect(screen.getByText('C001')).toBeInTheDocument();
+    expect(screen.getByText('95.00')).toBeInTheDocument();
+    expect(screen.getByText('20/09/2024')).toBeInTheDocument();
+    expect(screen.getByText('45')).toBeInTheDocument(); // Points for $95.00 spent
 });
