@@ -1,4 +1,3 @@
-// utils/calculatePoints.js
 export function calculateRewardPoints(amount) {
     let points = 0;
     if (amount > 100) {
@@ -6,5 +5,5 @@ export function calculateRewardPoints(amount) {
     } else if (amount > 50) {
         points += (amount - 50) * 1; // 1 point for each dollar between 50-100
     }
-    return points;
+    return Math.floor(points); // Use Math.floor to round down the total points
 }
