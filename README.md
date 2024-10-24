@@ -1,70 +1,123 @@
 # Getting Started with Create React App
+# Redme Instrsuction from this line
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+# Customer Rewards Program (Frontend)
 
-In the project directory, you can run:
+A retailer offers a rewards program to its customers, awarding points based on each recorded purchase.  
 
-### `npm start`
+## Project Description
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+A customer receives : 2 points for every dollar spent over $100 in each transaction, plus 1 point for every dollar spent between $50 and $100 in each transaction. 
+(e.g. a $120 purchase = 2x$20 + 1x$50 = 90 points). 
+  
+Given a record of every transaction during a three month period, calculate the reward points earned for each customer per month and total. 
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
 
-### `npm test`
+## Tech Stack
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- **Frontend:** React JS
+- **Testing:** Jest & React Testing Library
 
-### `npm run build`
+## Getting Started
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Prerequisites
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- Node.js and npm installed
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Setup
 
-### `npm run eject`
+1. **Clone the repository:**    
+https://github.com/sushmita30jan/reward-calculator/
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+2. **Install dependencies:**
+   npm install
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+3. **Start the React application:**
+   npm start
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+4. **Test Case Run**
+    npm run test
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Usage
 
-## Learn More
+The frontend application will be available at `http://localhost:3000`.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Mock Data
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+The application uses mock data to simulate the rewards calculation. The mock data is defined in `public/customerTransactionsData.json`.
 
-### Code Splitting
+## Features
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+- Calculate Reward points earned for each customer per month and total
+- Show data based on latest consecutive N month period of time
+  - Transaction data can be with in the same year or spans different years
 
-### Analyzing the Bundle Size
+* Data is grouped based on years if it spans different years
+* Multiple transactions within the month are sumed up together
+* Rounded up rewards
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+* Loading screen and Error handling is implemented
+* Test cases for all of the above scenarios are added
+* Transaction data is logged
 
-### Making a Progressive Web App
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
 
-### Advanced Configuration
+### Running Appilcation Screenshots
+https://github.com/mohdibrahim1995/Rewards_Points/blob/main/Full_Table.PNG
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Tests 
+https://github.com/mohdibrahim1995/Rewards_Points/blob/main/Test_Cases.PNG
 
-### Deployment
+Error - 
+https://github.com/mohdibrahim1995/Rewards_Points/blob/main/Error.png
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Loading - 
+https://github.com/mohdibrahim1995/Rewards_Points/blob/main/Loading_Screen.PNG
 
-### `npm run build` fails to minify
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+### File Structure
+
+reward-calculator/
+├── public/
+│   └── customerTransactionsData.json
+├── src/
+│   ├── __tests__/
+│   │   ├── CustomerList.test.js
+│   │   ├── MonthlyRewards.test.js
+│   │   ├── TotalRewards.test.js
+│   │   ├── TransactionsTable.test.js
+│   │   └── calculatePoints.test.js
+│   ├── components/
+│   │   ├── api/
+│   │   │   ├── transactionData.js
+│   │   │   └── transactionData.test.js
+│   │   ├── MonthlyRewards/
+│   │   │   ├── MonthlyRewards.js
+│   │   │   └── MonthlyRewards.css
+│   │   ├── TotalRewards/
+│   │   │   ├── TotalRewards.js
+│   │   │   └── TotalRewards.css
+│   │   ├── TransactionsTable/
+│   │   │   ├── TransactionsTable.js
+│   │   │   └── TransactionsTable.css
+│   │   └── CustomerList/
+│   │       ├── CustomerList.js
+│   │       └── CustomerList.css
+│   ├── utils/
+│   │   ├── calculatePoints.js
+│   │   └── _tests/
+│   │       └── calculatePoints.test.js
+│   ├── App.css
+│   ├── App.js
+│   ├── App.test.js
+│   ├── index.css
+│   ├── index.js
+│   ├── logo.svg
+│   ├── reportWebVitals.js
+│   └── setupTests.js
+├── .gitignore
+├── package.json
+└── ...
