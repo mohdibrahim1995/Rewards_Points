@@ -24,4 +24,4 @@ const TotalRewards = ({ totalRewards }) => {
     );
 };
 
-export default TotalRewards;
+export default React.memo(TotalRewards);
