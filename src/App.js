@@ -1,16 +1,13 @@
-
+import React from 'react';
 import './App.css';
 import CustomerList from './components/CustomerList';
 
-
-function App() {
+const App = React.memo(() => {
   return (
     <div className="App">
-
       <CustomerList />
-
     </div>
   );
-}
+});
 
 export default App;
