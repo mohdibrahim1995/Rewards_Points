@@ -54,3 +54,26 @@ h3 {
   font-size: 1.4em;
   margin-bottom: 10px;
 }
+.loading-message {
+  font-size: 32px; /* Adjust the size based on your preference */
+  font-weight: bold;
+  text-align: center;
+  margin-top: 20%;
+  color: #000; /* You can customize the color as well */
+}
+
+/* App.css */
+
+.error-message {
+  color: #ff4d4d; /* Red color to indicate error */
+  background-color: #ffe6e6; /* Light red background */
+  border: 1px solid #ff0000; /* Red border to highlight the error */
+  padding: 10px; /* Add padding around the error message */
+  border-radius: 5px; /* Slightly rounded corners */
+  font-size: 16px; /* Increase font size for readability */
+  text-align: center; /* Center the error text */
+  margin: 20px auto; /* Space around the message and center it */
+  max-width: 600px; /* Limit the width of the message box */
+  font-weight: bold; /* Bold the text to make it stand out */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for emphasis */
+}
